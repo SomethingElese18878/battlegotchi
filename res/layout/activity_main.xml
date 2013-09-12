@@ -19,25 +19,28 @@
             android:id="@+id/btnInfo"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:onClick="sendInfo"
             android:src="@drawable/a_info" />
 
         <ImageButton
             android:id="@+id/btnFeed"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:onClick="sendMessage"
+            android:onClick="sendFeed"
             android:src="@drawable/btn_selector" />
 
         <ImageButton
             android:id="@+id/btnTrain"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:onClick="sendMessage"
             android:src="@drawable/c_train" />
 
         <ImageButton
             android:id="@+id/btnFight"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:onClick="sendFight"
             android:src="@drawable/d_fight" />
     </LinearLayout>
 
