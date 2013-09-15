@@ -32,6 +32,13 @@ public final class R {
         public static final int g_heal=0x7f020008;
         public static final int h_mysterious=0x7f020009;
         public static final int ic_launcher=0x7f02000a;
+        public static final int poo=0x7f02000b;
+        public static final int poo1=0x7f02000c;
+        public static final int stage1_animationlist_info=0x7f02000d;
+        public static final int stage1_animationlist_main=0x7f02000e;
+        public static final int stage1_animationlist_poo=0x7f02000f;
+        public static final int test=0x7f020010;
+        public static final int test1=0x7f020011;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f080000;
@@ -39,14 +46,14 @@ public final class R {
         public static final int btnFeed=0x7f080003;
         public static final int btnFight=0x7f080005;
         public static final int btnInfo=0x7f080002;
+        public static final int btnLayoutBottom=0x7f080006;
+        public static final int btnLayoutTop=0x7f080001;
         public static final int btnTrain=0x7f080004;
-        public static final int gallery=0x7f080007;
-        public static final int imageButton5=0x7f080008;
-        public static final int imageButton6=0x7f080009;
-        public static final int imageButton7=0x7f08000a;
-        public static final int imageButton8=0x7f08000b;
-        public static final int linearLayout1=0x7f080001;
-        public static final int textView=0x7f080006;
+        public static final int imageButton5=0x7f080007;
+        public static final int imageButton6=0x7f080008;
+        public static final int imageButton7=0x7f080009;
+        public static final int imageButton8=0x7f08000a;
+        public static final int imageViewGotchi=0x7f08000b;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
