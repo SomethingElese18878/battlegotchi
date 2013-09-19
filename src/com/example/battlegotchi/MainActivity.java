@@ -32,10 +32,22 @@ public class MainActivity extends Activity {
 		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
 
 		ImageView mainSequence = (ImageView) findViewById(R.id.imageViewGotchi);
-		// TODO: alter background resource depending on which stage the gotchi
-		// currently is
-		mainSequence
-				.setBackgroundResource(R.drawable.stage1_animationlist_main);
+		if (gotchi.madePoo
+				|| (System.currentTimeMillis() - settings.getLong(
+						"lastTimePlayed", 0)) > (10 * 1000)) {
+			// TODO: alter background resource depending on which stage the
+			// gotchi
+			// currently is
+			mainSequence
+					.setBackgroundResource(R.drawable.stage1_animationlist_poo);
+			gotchi.setMadePoo(true);
+		} else {
+			// TODO: alter background resource depending on which stage the
+			// gotchi
+			// currently is
+			mainSequence
+					.setBackgroundResource(R.drawable.stage1_animationlist_main);
+		}
 		AnimationDrawable gotchiAnimation = (AnimationDrawable) mainSequence
 				.getBackground();
 
@@ -69,7 +81,7 @@ public class MainActivity extends Activity {
 			// gotchi
 			// currently is
 			gotchiView
-					.setBackgroundResource(R.drawable.stage1_animationlist_poo);
+					.setBackgroundResource(R.drawable.stage1_animationlist_eat);
 			break;
 		case R.id.btnTrain:
 			// TODO: alter background resource depending on which stage the
@@ -99,6 +111,26 @@ public class MainActivity extends Activity {
 
 		waitUntilAnimationIsFinished(animationDuration);
 
+	}
+
+	/**
+	 * called when the ImageView itself gets clicked
+	 * 
+	 * @param view the ImageView
+	 */
+	public void onImageViewClick(View view) {
+		// ImageView gotchiView = (ImageView)
+		// findViewById(R.id.imageViewGotchi);
+		if (gotchi.madePoo) {
+			view.setBackgroundResource(R.drawable.stage1_animationlist_main);
+			AnimationDrawable gotchiAnimation = (AnimationDrawable) view
+					.getBackground();
+
+			gotchiAnimation.setVisible(false, true);
+			gotchiAnimation.start();
+
+			gotchi.setMadePoo(false);
+		}
 	}
 
 	@Override
@@ -135,7 +167,7 @@ public class MainActivity extends Activity {
 	/**
 	 * restarts the main (idle) animation and
 	 */
-	private void restartMainAnimation() {
+	public void restartMainAnimation() {
 		// changes to UI may only be done in main thread, use runOnUiThread
 		runOnUiThread(new Runnable() {
 			public void run() {
@@ -163,7 +195,7 @@ public class MainActivity extends Activity {
 	 * @param duration
 	 *            the duration of the animation
 	 */
-	private void waitUntilAnimationIsFinished(int duration) {
+	public void waitUntilAnimationIsFinished(int duration) {
 		TimerTask task = new TimerTask() {
 
 			@Override
@@ -178,7 +210,7 @@ public class MainActivity extends Activity {
 	/**
 	 * saves all gotchi data as shared preferences (persistence)
 	 */
-	private void saveGotchiData() {
+	public void saveGotchiData() {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
 				MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
@@ -186,6 +218,8 @@ public class MainActivity extends Activity {
 		editor.putInt("gotchiStrength", gotchi.getStrength());
 		editor.putBoolean("gotchiMadePoo", gotchi.getMadePoo());
 		editor.putBoolean("gotchiIsAngry", gotchi.getIsAngry());
+		// time stamp to determine when game was played the last time
+		editor.putLong("lastTimePlayed", System.currentTimeMillis());
 
 		editor.commit();
 	}
@@ -193,7 +227,7 @@ public class MainActivity extends Activity {
 	/**
 	 * Clears all gotchi data to reset the game stats
 	 */
-	private void clearGotchiData() {
+	public void clearGotchiData() {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
 				MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
@@ -207,7 +241,12 @@ public class MainActivity extends Activity {
 		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
 	}
 
-	private void changeAllButtonStates(boolean enabled) {
+	/**
+	 * enabled or disables all action buttons
+	 * 
+	 * @param enabled whether the buttons shall be enabled or disabled
+	 */
+	public void changeAllButtonStates(boolean enabled) {
 		((ImageButton) findViewById(R.id.btnInfo)).setEnabled(enabled);
 		((ImageButton) findViewById(R.id.btnFeed)).setEnabled(enabled);
 		((ImageButton) findViewById(R.id.btnTrain)).setEnabled(enabled);
