@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 
-	// name of the shared refernece
+	// name of the shared reference
 	final String PREFS_NAME = "gotchidata";
 	private Gotchi gotchi;
 
@@ -24,35 +24,30 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		gotchi = new Gotchi();
 
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
-				MODE_PRIVATE);
-		gotchi.setHealth(settings.getInt("gotchiHealth", 100));
-		gotchi.setStrength(settings.getInt("gotchiStrength", 1));
-		gotchi.setIsAngry(settings.getBoolean("gotchiIsAngry", false));
-		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
+		loadGotchiData();
 
 		ImageView mainSequence = (ImageView) findViewById(R.id.imageViewGotchi);
-		if (gotchi.madePoo
-				|| (System.currentTimeMillis() - settings.getLong(
-						"lastTimePlayed", 0)) > (10 * 1000)) {
-			// TODO: alter background resource depending on which stage the
-			// gotchi
-			// currently is
-			mainSequence
-					.setBackgroundResource(R.drawable.stage1_animationlist_poo);
-			gotchi.setMadePoo(true);
-		} else {
-			// TODO: alter background resource depending on which stage the
-			// gotchi
-			// currently is
-			mainSequence
-					.setBackgroundResource(R.drawable.stage1_animationlist_main);
-		}
+		setPooAnimation(mainSequence);
 		AnimationDrawable gotchiAnimation = (AnimationDrawable) mainSequence
 				.getBackground();
 
 		gotchiAnimation.setVisible(false, true);
 		gotchiAnimation.start();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		saveGotchiData();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		ImageView mainSequence = (ImageView) findViewById(R.id.imageViewGotchi);
+		setPooAnimation(mainSequence);
+
 	}
 
 	/**
@@ -116,7 +111,8 @@ public class MainActivity extends Activity {
 	/**
 	 * called when the ImageView itself gets clicked
 	 * 
-	 * @param view the ImageView
+	 * @param view
+	 *            the ImageView
 	 */
 	public void onImageViewClick(View view) {
 		// ImageView gotchiView = (ImageView)
@@ -208,6 +204,33 @@ public class MainActivity extends Activity {
 	}
 
 	/**
+	 * Sets the poo animation, if user wasn't interacting with gotchi for a certain time.
+	 * Otherwise the standard animation is set.
+	 * 
+	 * @param mainSequence the main image view
+	 */
+	public void setPooAnimation(ImageView mainSequence) {
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
+				MODE_PRIVATE);
+		if (gotchi.madePoo
+				|| (System.currentTimeMillis() - settings.getLong(
+						"lastTimePlayed", 0)) > (10 * 1000)) {
+			// TODO: alter background resource depending on which stage the
+			// gotchi
+			// currently is
+			mainSequence
+					.setBackgroundResource(R.drawable.stage1_animationlist_poo);
+			gotchi.setMadePoo(true);
+		} else {
+			// TODO: alter background resource depending on which stage the
+			// gotchi
+			// currently is
+			mainSequence
+					.setBackgroundResource(R.drawable.stage1_animationlist_main);
+		}
+	}
+
+	/**
 	 * saves all gotchi data as shared preferences (persistence)
 	 */
 	public void saveGotchiData() {
@@ -222,6 +245,18 @@ public class MainActivity extends Activity {
 		editor.putLong("lastTimePlayed", System.currentTimeMillis());
 
 		editor.commit();
+	}
+
+	/**
+	 * loads and sets the last saved gotchi data
+	 */
+	public void loadGotchiData() {
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
+				MODE_PRIVATE);
+		gotchi.setHealth(settings.getInt("gotchiHealth", 100));
+		gotchi.setStrength(settings.getInt("gotchiStrength", 1));
+		gotchi.setIsAngry(settings.getBoolean("gotchiIsAngry", false));
+		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
 	}
 
 	/**
@@ -244,7 +279,8 @@ public class MainActivity extends Activity {
 	/**
 	 * enabled or disables all action buttons
 	 * 
-	 * @param enabled whether the buttons shall be enabled or disabled
+	 * @param enabled
+	 *            whether the buttons shall be enabled or disabled
 	 */
 	public void changeAllButtonStates(boolean enabled) {
 		((ImageButton) findViewById(R.id.btnInfo)).setEnabled(enabled);
