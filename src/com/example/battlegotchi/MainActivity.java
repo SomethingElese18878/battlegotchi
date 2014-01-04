@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -64,11 +65,15 @@ public class MainActivity extends Activity {
 
 		switch (view.getId()) {
 		case R.id.btnInfo:
-			// TODO: alter background resource depending on which stage the
-			// gotchi
-			// currently is
-			gotchiView
-					.setBackgroundResource(R.drawable.stage1_animationlist_info);
+			Intent intent = new Intent(this, InfoActivity.class);
+			
+			//put gotchi data as extras (maybe solution with "parcelables" is better?)
+			intent.putExtra("gotchiHealth", gotchi.getHealth());			
+			intent.putExtra("gotchiStrength", gotchi.getStrength());			
+			intent.putExtra("gotchiIsAngry", gotchi.getIsAngry());			
+			intent.putExtra("gotchiMadePoo", gotchi.getMadePoo());			
+			
+			startActivity(intent);
 			break;
 		case R.id.btnFeed:
 			gotchi.setHealth(gotchi.getHealth() + 50);
