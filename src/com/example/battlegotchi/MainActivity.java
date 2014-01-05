@@ -3,6 +3,7 @@ package com.example.battlegotchi;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,8 +24,12 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		gotchi = new Gotchi();
 
+		// hide actionbar
+		ActionBar actionBar = getActionBar();
+		actionBar.hide();
+
+		gotchi = new Gotchi();
 		loadGotchiData();
 
 		ImageView mainSequence = (ImageView) findViewById(R.id.imageViewGotchi);
@@ -65,14 +70,16 @@ public class MainActivity extends Activity {
 
 		switch (view.getId()) {
 		case R.id.btnInfo:
+			// opens new activity to display gotchi info
 			Intent intent = new Intent(this, InfoActivity.class);
-			
-			//put gotchi data as extras (maybe solution with "parcelables" is better?)
-			intent.putExtra("gotchiHealth", gotchi.getHealth());			
-			intent.putExtra("gotchiStrength", gotchi.getStrength());			
-			intent.putExtra("gotchiIsAngry", gotchi.getIsAngry());			
-			intent.putExtra("gotchiMadePoo", gotchi.getMadePoo());			
-			
+
+			// put gotchi data as extras (maybe solution with "parcelables" is
+			// better?)
+			intent.putExtra("gotchiHealth", gotchi.getHealth());
+			intent.putExtra("gotchiStrength", gotchi.getStrength());
+			intent.putExtra("gotchiIsAngry", gotchi.getIsAngry());
+			intent.putExtra("gotchiMadePoo", gotchi.getMadePoo());
+
 			startActivity(intent);
 			break;
 		case R.id.btnFeed:
@@ -209,10 +216,11 @@ public class MainActivity extends Activity {
 	}
 
 	/**
-	 * Sets the poo animation, if user wasn't interacting with gotchi for a certain time.
-	 * Otherwise the standard animation is set.
+	 * Sets the poo animation, if user wasn't interacting with gotchi for a
+	 * certain time. Otherwise the standard animation is set.
 	 * 
-	 * @param mainSequence the main image view
+	 * @param mainSequence
+	 *            the main image view
 	 */
 	public void setPooAnimation(ImageView mainSequence) {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
