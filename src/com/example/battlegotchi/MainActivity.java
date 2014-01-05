@@ -53,7 +53,11 @@ public class MainActivity extends Activity {
 		super.onResume();
 		ImageView mainSequence = (ImageView) findViewById(R.id.imageViewGotchi);
 		setPooAnimation(mainSequence);
+		AnimationDrawable gotchiAnimation = (AnimationDrawable) mainSequence
+				.getBackground();
 
+		gotchiAnimation.setVisible(false, true);
+		gotchiAnimation.start();
 	}
 
 	/**
