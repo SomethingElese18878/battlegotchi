@@ -14,9 +14,9 @@
         android:id="@+id/btnLayoutTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
 
         <ImageButton
             android:id="@+id/btnInfo"
@@ -51,9 +51,9 @@
         android:id="@+id/btnLayoutBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal">        
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">        
         
         <ImageButton
             android:id="@+id/imageButton5"
@@ -84,8 +84,8 @@
 	    android:id="@+id/imageViewGotchi"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_above="@id/btnLayoutBottom"
 	    android:layout_centerHorizontal="true"
+	    android:layout_centerVertical="true"
 	    android:onClick="onImageViewClick"/>
     
 </RelativeLayout>
