@@ -11,6 +11,7 @@ public final class R {
     public static final class attr {
     }
     public static final class dimen {
+        public static final int activity_button_bottom_margin=0x7f040002;
         /**  Default screen margins, per the Android Design guidelines. 
 
          Customize dimensions originally defined in res/values/dimens.xml (such as
@@ -46,8 +47,17 @@ public final class R {
         public static final int stage1_eat6=0x7f020016;
         public static final int stage1_main=0x7f020017;
         public static final int stage1_main1=0x7f020018;
-        public static final int stage1_main_poo=0x7f020019;
-        public static final int stage1_main_poo1=0x7f02001a;
+        public static final int stage1_main10=0x7f020019;
+        public static final int stage1_main2=0x7f02001a;
+        public static final int stage1_main3=0x7f02001b;
+        public static final int stage1_main4=0x7f02001c;
+        public static final int stage1_main5=0x7f02001d;
+        public static final int stage1_main6=0x7f02001e;
+        public static final int stage1_main7=0x7f02001f;
+        public static final int stage1_main8=0x7f020020;
+        public static final int stage1_main9=0x7f020021;
+        public static final int stage1_main_poo=0x7f020022;
+        public static final int stage1_main_poo1=0x7f020023;
     }
     public static final class id {
         public static final int action_settings=0x7f08000d;

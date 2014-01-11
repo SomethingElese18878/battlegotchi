@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:onClick="onAction"
             android:background="@drawable/a_info" 
-            android:layout_marginBottom="20px" />
+            android:layout_marginBottom="@dimen/activity_button_bottom_margin" />
 
         <ImageButton
             android:id="@+id/btnFeed"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:onClick="onAction"
             android:background="@drawable/btn_selector" 
-            android:layout_marginBottom="20px" />
+            android:layout_marginBottom="@dimen/activity_button_bottom_margin" />
 
         <ImageButton
             android:id="@+id/btnTrain"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:onClick="onAction"
             android:background="@drawable/c_train" 
-            android:layout_marginBottom="20px" />
+            android:layout_marginBottom="@dimen/activity_button_bottom_margin" />
 
         <ImageButton
             android:id="@+id/btnFight"
@@ -63,21 +63,21 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:background="@drawable/e_clean_poo" 
-        	android:layout_marginBottom="20px" />
+        	android:layout_marginBottom="@dimen/activity_button_bottom_margin" />
 
         <ImageButton
             android:id="@+id/imageButton6"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:background="@drawable/f_light" 
-            android:layout_marginBottom="20px" />
+            android:layout_marginBottom="@dimen/activity_button_bottom_margin" />
 
         <ImageButton
             android:id="@+id/imageButton7"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:background="@drawable/g_heal" 
-            android:layout_marginBottom="20px" />
+            android:layout_marginBottom="@dimen/activity_button_bottom_margin" />
 
         <ImageButton
             android:id="@+id/imageButton8"
