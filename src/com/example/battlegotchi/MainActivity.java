@@ -69,11 +69,14 @@ public class MainActivity extends Activity {
 	public void onAction(View view) {
 		ImageView gotchiView = (ImageView) findViewById(R.id.imageViewGotchi);
 
-		// deactivate action buttons
-		changeAllButtonStates(false);
-
 		switch (view.getId()) {
 		case R.id.btnInfo:
+			// TODO: deactivate action buttons BEFORE switch (for now it has to
+			// be in "case" for testing purposes)
+			
+			// deactivate action buttons
+			changeAllButtonStates(false);
+
 			// opens new activity to display gotchi info
 			Intent intent = new Intent(this, InfoActivity.class);
 
@@ -98,9 +101,12 @@ public class MainActivity extends Activity {
 			gotchiView.setBackgroundResource(resId);
 			break;
 		case R.id.btnTrain:
-			// TODO: alter background resource depending on which stage the
-			// gotchi
-			// currently is
+			if (gotchi.getStage() == 1) {
+				gotchi.setStage(2);
+			} else {
+				gotchi.setStage(1);
+			}
+			restartMainAnimation();
 			break;
 		case R.id.btnFight:
 			// TODO: alter background resource depending on which stage the
@@ -135,10 +141,10 @@ public class MainActivity extends Activity {
 		if (gotchi.madePoo) {
 			// alter background resource depending on which stage the
 			// gotchi currently is
-			
+
 			int resId = getResources().getIdentifier(
 					"stage" + gotchi.getStage() + "_animationlist_main",
-					"drawable", getPackageName());			
+					"drawable", getPackageName());
 			view.setBackgroundResource(resId);
 			AnimationDrawable gotchiAnimation = (AnimationDrawable) view
 					.getBackground();
@@ -195,8 +201,7 @@ public class MainActivity extends Activity {
 				int resId = getResources().getIdentifier(
 						"stage" + gotchi.getStage() + "_animationlist_main",
 						"drawable", getPackageName());
-				mainSequence
-						.setBackgroundResource(resId);
+				mainSequence.setBackgroundResource(resId);
 				AnimationDrawable gotchiAnimation = (AnimationDrawable) mainSequence
 						.getBackground();
 
