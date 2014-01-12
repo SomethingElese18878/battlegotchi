@@ -83,30 +83,29 @@ public class MainActivity extends Activity {
 			intent.putExtra("gotchiStrength", gotchi.getStrength());
 			intent.putExtra("gotchiIsAngry", gotchi.getIsAngry());
 			intent.putExtra("gotchiMadePoo", gotchi.getMadePoo());
+			intent.putExtra("gotchiStage", gotchi.getStage());
 
 			startActivity(intent);
 			break;
 		case R.id.btnFeed:
 			gotchi.setHealth(gotchi.getHealth() + 50);
-			// TODO: alter background resource depending on which stage the
-			// gotchi
-			// currently is
-			gotchiView
-					.setBackgroundResource(R.drawable.stage1_animationlist_eat);
+
+			// alter background resource depending on which stage the
+			// gotchi currently is
+			int resId = getResources().getIdentifier(
+					"stage" + gotchi.getStage() + "_animationlist_eat",
+					"drawable", getPackageName());
+			gotchiView.setBackgroundResource(resId);
 			break;
 		case R.id.btnTrain:
 			// TODO: alter background resource depending on which stage the
 			// gotchi
 			// currently is
-			// sendInfoSequence
-			// .setBackgroundResource(R.drawable.stage1_animationlist_train);
 			break;
 		case R.id.btnFight:
 			// TODO: alter background resource depending on which stage the
 			// gotchi
 			// currently is
-			// sendInfoSequence
-			// .setBackgroundResource(R.drawable.stage1_animationlist_fight);
 			clearGotchiData();
 			break;
 		default:
@@ -134,7 +133,13 @@ public class MainActivity extends Activity {
 		// ImageView gotchiView = (ImageView)
 		// findViewById(R.id.imageViewGotchi);
 		if (gotchi.madePoo) {
-			view.setBackgroundResource(R.drawable.stage1_animationlist_main);
+			// alter background resource depending on which stage the
+			// gotchi currently is
+			
+			int resId = getResources().getIdentifier(
+					"stage" + gotchi.getStage() + "_animationlist_main",
+					"drawable", getPackageName());			
+			view.setBackgroundResource(resId);
 			AnimationDrawable gotchiAnimation = (AnimationDrawable) view
 					.getBackground();
 
@@ -187,8 +192,11 @@ public class MainActivity extends Activity {
 				// TODO: alter background resource depending on which stage the
 				// gotchi
 				// currently is
+				int resId = getResources().getIdentifier(
+						"stage" + gotchi.getStage() + "_animationlist_main",
+						"drawable", getPackageName());
 				mainSequence
-						.setBackgroundResource(R.drawable.stage1_animationlist_main);
+						.setBackgroundResource(resId);
 				AnimationDrawable gotchiAnimation = (AnimationDrawable) mainSequence
 						.getBackground();
 
@@ -232,18 +240,20 @@ public class MainActivity extends Activity {
 		if (gotchi.madePoo
 				|| (System.currentTimeMillis() - settings.getLong(
 						"lastTimePlayed", 0)) > (10 * 1000)) {
-			// TODO: alter background resource depending on which stage the
-			// gotchi
-			// currently is
-			mainSequence
-					.setBackgroundResource(R.drawable.stage1_animationlist_poo);
+			// alter background resource depending on which stage the
+			// gotchi currently is
+			int resId = getResources().getIdentifier(
+					"stage" + gotchi.getStage() + "_animationlist_poo",
+					"drawable", getPackageName());
+			mainSequence.setBackgroundResource(resId);
 			gotchi.setMadePoo(true);
 		} else {
-			// TODO: alter background resource depending on which stage the
-			// gotchi
-			// currently is
-			mainSequence
-					.setBackgroundResource(R.drawable.stage1_animationlist_main);
+			// alter background resource depending on which stage the
+			// gotchi currently is
+			int resId = getResources().getIdentifier(
+					"stage" + gotchi.getStage() + "_animationlist_main",
+					"drawable", getPackageName());
+			mainSequence.setBackgroundResource(resId);
 		}
 	}
 
@@ -258,6 +268,7 @@ public class MainActivity extends Activity {
 		editor.putInt("gotchiStrength", gotchi.getStrength());
 		editor.putBoolean("gotchiMadePoo", gotchi.getMadePoo());
 		editor.putBoolean("gotchiIsAngry", gotchi.getIsAngry());
+		editor.putInt("gotchiStage", gotchi.getStage());
 		// time stamp to determine when game was played the last time
 		editor.putLong("lastTimePlayed", System.currentTimeMillis());
 
@@ -274,6 +285,7 @@ public class MainActivity extends Activity {
 		gotchi.setStrength(settings.getInt("gotchiStrength", 1));
 		gotchi.setIsAngry(settings.getBoolean("gotchiIsAngry", false));
 		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
+		gotchi.setStage(settings.getInt("gotchiStage", 1));
 	}
 
 	/**
@@ -291,6 +303,7 @@ public class MainActivity extends Activity {
 		gotchi.setStrength(settings.getInt("gotchiStrength", 1));
 		gotchi.setIsAngry(settings.getBoolean("gotchiIsAngry", false));
 		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
+		gotchi.setStage(settings.getInt("gotchiStage", 1));
 	}
 
 	/**

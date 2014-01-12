@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+    android:drawable="@drawable/stage2_eat"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage2_eat1"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage2_eat2"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage2_eat3"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage2_eat4"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage2_eat5"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage2_eat6"
+    android:duration="1000"/>
+</animation-list>

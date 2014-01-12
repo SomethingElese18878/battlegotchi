@@ -2,65 +2,59 @@
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android" >
 	<item
     android:drawable="@drawable/stage1_main"
-    android:duration="1500"/>
+    android:duration="1000"/>
 	<item
     android:drawable="@drawable/stage1_main1"
-    android:duration="1500"/>
+    android:duration="1000"/>
 	<item
-    android:drawable="@drawable/stage1_main"
-    android:duration="1500"/>
-	<item
-    android:drawable="@drawable/stage1_main1"
-    android:duration="1500"/>
-	<item
-    android:drawable="@drawable/stage1_main"
-    android:duration="1500"/>
-	<item
-    android:drawable="@drawable/stage1_main9"
-    android:duration="1500"/>
-	<item
-    android:drawable="@drawable/stage1_main4"
-    android:duration="1500"/>
-	<item
-    android:drawable="@drawable/stage1_main5"
-    android:duration="1500"/>
+    android:drawable="@drawable/stage1_main2"
+    android:duration="1000"/>
 	<item
     android:drawable="@drawable/stage1_main3"
-    android:duration="1500"/>
+    android:duration="1000"/>
 	<item
     android:drawable="@drawable/stage1_main4"
-    android:duration="1500"/>
+    android:duration="1000"/>
 	<item
     android:drawable="@drawable/stage1_main5"
-    android:duration="1500"/>
+    android:duration="1000"/>
 	<item
-    android:drawable="@drawable/stage1_main9"
-    android:duration="1500"/>
+    android:drawable="@drawable/stage1_main2"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage1_main5"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage1_main2"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage1_main1"
+    android:duration="1000"/>
 	<item
     android:drawable="@drawable/stage1_main"
-    android:duration="1500"/>
+    android:duration="1000"/>
 	<item
-    android:drawable="@drawable/stage1_main10"
-    android:duration="1500"/>
-	<item
-    android:drawable="@drawable/stage1_main7"
-    android:duration="1500"/>
-	<item
-    android:drawable="@drawable/stage1_main2"
-    android:duration="1500"/>
+    android:drawable="@drawable/stage1_main6"
+    android:duration="1000"/>
 	<item
     android:drawable="@drawable/stage1_main7"
-    android:duration="1500"/>
-	<item
-    android:drawable="@drawable/stage1_main2"
-    android:duration="1500"/>
-	<item
-    android:drawable="@drawable/stage1_main7"
-    android:duration="1500"/>
-	<item
-    android:drawable="@drawable/stage1_main10"
-    android:duration="1500"/>
+    android:duration="1000"/>
 	<item
     android:drawable="@drawable/stage1_main8"
-    android:duration="1500"/>
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage1_main9"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage1_main10"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage1_main7"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage1_main6"
+    android:duration="1000"/>
+	<item
+    android:drawable="@drawable/stage1_main"
+    android:duration="1000"/>
 </animation-list>

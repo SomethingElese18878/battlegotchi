@@ -4,6 +4,7 @@ public class Gotchi {
 
 	int health;
 	int strength;
+	int stage;
 	boolean madePoo;
 	boolean isAngry;
 
@@ -48,6 +49,14 @@ public class Gotchi {
 
 	public void takeDamage() {
 		health = health - 10;
+	}
+
+	public int getStage() {
+		return this.stage;
+	}
+	
+	public void setStage(int stage) {
+		this.stage = stage;
 	}
 
 }

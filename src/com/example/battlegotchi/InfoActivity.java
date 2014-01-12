@@ -41,6 +41,10 @@ public class InfoActivity extends Activity {
 		TextView tv_angry = new TextView(this);
 		tv_angry.setText("Is Angry: " +String.valueOf(intent.getBooleanExtra("gotchiIsAngry", false)));
 		layout.addView(tv_angry);
+		
+		TextView tv_stage = new TextView(this);
+		tv_stage.setText("Stage: " +String.valueOf(intent.getIntExtra("gotchiStage", 1)));
+		layout.addView(tv_stage);
 	}
 
 	/**
