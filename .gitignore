@@ -2,3 +2,7 @@
 *.dex
 *.class
 *.ap_
+
+#generated files/folders
+bin/
+gen/
