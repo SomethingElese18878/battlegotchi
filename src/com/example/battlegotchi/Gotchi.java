@@ -1,10 +1,14 @@
 package com.example.battlegotchi;
 
+import android.content.SharedPreferences;
+
 public class Gotchi {
 
 	int health;
 	int strength;
 	int stage;
+	int age;
+	int weight;
 	boolean madePoo;
 	boolean isAngry;
 
@@ -54,9 +58,25 @@ public class Gotchi {
 	public int getStage() {
 		return this.stage;
 	}
-	
+
 	public void setStage(int stage) {
 		this.stage = stage;
 	}
 
+	public long getAge(SharedPreferences settings) {
+		return (System.currentTimeMillis() - settings.getLong(
+				"firstRunTimestamp", 0))/1000/60/60;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+
+	public int getMaxWeight() {
+		return stage * stage;
+	}
 }

@@ -45,6 +45,14 @@ public class InfoActivity extends Activity {
 		TextView tv_stage = new TextView(this);
 		tv_stage.setText("Stage: " +String.valueOf(intent.getIntExtra("gotchiStage", 1)));
 		layout.addView(tv_stage);
+		
+		TextView tv_age = new TextView(this);
+		tv_age.setText("Age: " +String.valueOf(intent.getLongExtra("gotchiAge", 1)));
+		layout.addView(tv_age);
+		
+		TextView tv_weight = new TextView(this);
+		tv_weight.setText("Weight: " +String.valueOf(intent.getIntExtra("gotchiWeight", 1)));
+		layout.addView(tv_weight);
 	}
 
 	/**
