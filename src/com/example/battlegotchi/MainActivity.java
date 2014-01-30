@@ -39,8 +39,9 @@ public class MainActivity extends Activity {
 		long firstRunTimestamp = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
 				.getLong("firstRunTimestamp", 0);
 		if (firstRunTimestamp == 0) {
-			getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit().putLong(
-					"firstRunTimestamp", System.currentTimeMillis()).commit();
+			getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit()
+					.putLong("firstRunTimestamp", System.currentTimeMillis())
+					.commit();
 		}
 
 		loadGotchiData();
@@ -100,8 +101,8 @@ public class MainActivity extends Activity {
 			intent.putExtra("gotchiIsAngry", gotchi.getIsAngry());
 			intent.putExtra("gotchiMadePoo", gotchi.getMadePoo());
 			intent.putExtra("gotchiStage", gotchi.getStage());
-			intent.putExtra("gotchiAge", gotchi.getAge(getSharedPreferences(PREFS_NAME,
-					MODE_PRIVATE)));
+			intent.putExtra("gotchiAge", gotchi.getAge(getSharedPreferences(
+					PREFS_NAME, MODE_PRIVATE)));
 			intent.putExtra("gotchiWeight", gotchi.getWeight());
 
 			startActivity(intent);
@@ -260,14 +261,29 @@ public class MainActivity extends Activity {
 	public void setPooAnimation(ImageView mainSequence) {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
 				MODE_PRIVATE);
-		if (gotchi.madePoo
-				|| (System.currentTimeMillis() - settings.getLong(
-						"lastTimePlayed", 0)) > (POO_TIME * 1000)) {
+		long timeSinceLastInteraction = System.currentTimeMillis()
+				- settings.getLong("lastTimePlayed", 0);
+		if (gotchi.madePoo || timeSinceLastInteraction >= (POO_TIME * 1000)) {
+			// determine how much poo the gotchi made
+			String pooSize = "small";
+			if (timeSinceLastInteraction <= (POO_TIME * 2 * 1000)) {
+				pooSize = "small";
+			}
+
+			else if ((timeSinceLastInteraction > (POO_TIME * 2 * 1000))
+					&& (timeSinceLastInteraction < (POO_TIME * 3 * 1000))) {
+				pooSize = "medium";
+			}
+
+			else if (timeSinceLastInteraction >= (POO_TIME * 3 * 1000)) {
+				pooSize = "big";
+			}
+
 			// alter background resource depending on which stage the
-			// gotchi currently is
+			// gotchi currently is and how much poo it made
 			int resId = getResources().getIdentifier(
-					"stage" + gotchi.getStage() + "_animationlist_poo",
-					"drawable", getPackageName());
+					"stage" + gotchi.getStage() + "_animationlist_poo_"
+							+ pooSize, "drawable", getPackageName());
 			mainSequence.setBackgroundResource(resId);
 			gotchi.setMadePoo(true);
 		} else {

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
@@ -22,37 +23,37 @@ public class InfoActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		//get gotchi data from intent and add TextViews to LinearLayout
-		Intent intent = getIntent();
-		LinearLayout layout = (LinearLayout) findViewById(R.id.info_linearLayout);
-		
-		TextView tv_health = new TextView(this);
-		tv_health.setText("Health: " +String.valueOf(intent.getIntExtra("gotchiHealth", 100)));
-		layout.addView(tv_health);
-		
-		TextView tv_strength = new TextView(this);
-		tv_strength.setText("Strength: " +String.valueOf(intent.getIntExtra("gotchiStrength", 1)));
-		layout.addView(tv_strength);
-		
-		TextView tv_poo = new TextView(this);
-		tv_poo.setText("Made Poo: " +String.valueOf(intent.getBooleanExtra("gotchiMadePoo", false)));
-		layout.addView(tv_poo);
-		
-		TextView tv_angry = new TextView(this);
-		tv_angry.setText("Is Angry: " +String.valueOf(intent.getBooleanExtra("gotchiIsAngry", false)));
-		layout.addView(tv_angry);
-		
-		TextView tv_stage = new TextView(this);
-		tv_stage.setText("Stage: " +String.valueOf(intent.getIntExtra("gotchiStage", 1)));
-		layout.addView(tv_stage);
-		
-		TextView tv_age = new TextView(this);
-		tv_age.setText("Age: " +String.valueOf(intent.getLongExtra("gotchiAge", 1)));
-		layout.addView(tv_age);
-		
-		TextView tv_weight = new TextView(this);
-		tv_weight.setText("Weight: " +String.valueOf(intent.getIntExtra("gotchiWeight", 1)));
-		layout.addView(tv_weight);
+//		//get gotchi data from intent and add TextViews to LinearLayout
+//		Intent intent = getIntent();
+//		LinearLayout layout = (LinearLayout) findViewById(R.id.info_linearLayout);
+//		
+//		TextView tv_health = new TextView(this);
+//		tv_health.setText("Health: " +String.valueOf(intent.getIntExtra("gotchiHealth", 100)));
+//		layout.addView(tv_health);
+//		
+//		TextView tv_strength = new TextView(this);
+//		tv_strength.setText("Strength: " +String.valueOf(intent.getIntExtra("gotchiStrength", 1)));
+//		layout.addView(tv_strength);
+//		
+//		TextView tv_poo = new TextView(this);
+//		tv_poo.setText("Made Poo: " +String.valueOf(intent.getBooleanExtra("gotchiMadePoo", false)));
+//		layout.addView(tv_poo);
+//		
+//		TextView tv_angry = new TextView(this);
+//		tv_angry.setText("Is Angry: " +String.valueOf(intent.getBooleanExtra("gotchiIsAngry", false)));
+//		layout.addView(tv_angry);
+//		
+//		TextView tv_stage = new TextView(this);
+//		tv_stage.setText("Stage: " +String.valueOf(intent.getIntExtra("gotchiStage", 1)));
+//		layout.addView(tv_stage);
+//		
+//		TextView tv_age = new TextView(this);
+//		tv_age.setText("Age: " +String.valueOf(intent.getLongExtra("gotchiAge", 1)));
+//		layout.addView(tv_age);
+//		
+//		TextView tv_weight = new TextView(this);
+//		tv_weight.setText("Weight: " +String.valueOf(intent.getIntExtra("gotchiWeight", 1)));
+//		layout.addView(tv_weight);
 	}
 
 	/**
