@@ -96,7 +96,7 @@ public class MainActivity extends Activity {
 
 			// put gotchi data as extras (maybe solution with "parcelables" is
 			// better?)
-			intent.putExtra("gotchiHealth", gotchi.getHealth());
+			intent.putExtra("gotchiHunger", gotchi.getHunger());
 			intent.putExtra("gotchiStrength", gotchi.getStrength());
 			intent.putExtra("gotchiIsAngry", gotchi.getIsAngry());
 			intent.putExtra("gotchiMadePoo", gotchi.getMadePoo());
@@ -108,7 +108,9 @@ public class MainActivity extends Activity {
 			startActivity(intent);
 			break;
 		case R.id.btnFeed:
-			gotchi.setHealth(gotchi.getHealth() + 50);
+			if(gotchi.getHunger() < 4){
+				gotchi.setHunger(gotchi.getHunger() + 1);
+			}
 
 			// alter background resource depending on which stage the
 			// gotchi currently is
@@ -303,7 +305,7 @@ public class MainActivity extends Activity {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
 				MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putInt("gotchiHealth", gotchi.getHealth());
+		editor.putInt("gotchiHunger", gotchi.getHunger());
 		editor.putInt("gotchiStrength", gotchi.getStrength());
 		editor.putBoolean("gotchiMadePoo", gotchi.getMadePoo());
 		editor.putBoolean("gotchiIsAngry", gotchi.getIsAngry());
@@ -321,7 +323,7 @@ public class MainActivity extends Activity {
 	public void loadGotchiData() {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
 				MODE_PRIVATE);
-		gotchi.setHealth(settings.getInt("gotchiHealth", 100));
+		gotchi.setHunger(settings.getInt("gotchiHunger", 1));
 		gotchi.setStrength(settings.getInt("gotchiStrength", 1));
 		gotchi.setIsAngry(settings.getBoolean("gotchiIsAngry", false));
 		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
@@ -340,7 +342,7 @@ public class MainActivity extends Activity {
 		editor.clear();
 		editor.commit();
 
-		gotchi.setHealth(settings.getInt("gotchiHealth", 100));
+		gotchi.setHunger(settings.getInt("gotchiHunger", 1));
 		gotchi.setStrength(settings.getInt("gotchiStrength", 1));
 		gotchi.setIsAngry(settings.getBoolean("gotchiIsAngry", false));
 		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
