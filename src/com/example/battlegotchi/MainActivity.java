@@ -17,7 +17,10 @@ import android.widget.ImageView;
 public class MainActivity extends Activity {
 
 	// name of the shared reference
-	final String PREFS_NAME = "gotchidata";
+	public final static String PREFS_NAME = "gotchidata";
+
+	// time in seconds for gotchi to poo, when user doesn't interact
+	final int POO_TIME = 10;
 	private Gotchi gotchi;
 
 	@Override
@@ -30,6 +33,17 @@ public class MainActivity extends Activity {
 		actionBar.hide();
 
 		gotchi = new Gotchi();
+
+		// if the app is run for the first time, set a timestamp (needed to
+		// calculate gotchi age)
+		long firstRunTimestamp = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+				.getLong("firstRunTimestamp", 0);
+		if (firstRunTimestamp == 0) {
+			getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit()
+					.putLong("firstRunTimestamp", System.currentTimeMillis())
+					.commit();
+		}
+
 		loadGotchiData();
 
 		ImageView mainSequence = (ImageView) findViewById(R.id.imageViewGotchi);
@@ -73,7 +87,7 @@ public class MainActivity extends Activity {
 		case R.id.btnInfo:
 			// TODO: deactivate action buttons BEFORE switch (for now it has to
 			// be in "case" for testing purposes)
-			
+
 			// deactivate action buttons
 			changeAllButtonStates(false);
 
@@ -82,16 +96,21 @@ public class MainActivity extends Activity {
 
 			// put gotchi data as extras (maybe solution with "parcelables" is
 			// better?)
-			intent.putExtra("gotchiHealth", gotchi.getHealth());
+			intent.putExtra("gotchiHunger", gotchi.getHunger());
 			intent.putExtra("gotchiStrength", gotchi.getStrength());
 			intent.putExtra("gotchiIsAngry", gotchi.getIsAngry());
 			intent.putExtra("gotchiMadePoo", gotchi.getMadePoo());
 			intent.putExtra("gotchiStage", gotchi.getStage());
+			intent.putExtra("gotchiAge", gotchi.getAge(getSharedPreferences(
+					PREFS_NAME, MODE_PRIVATE)));
+			intent.putExtra("gotchiWeight", gotchi.getWeight());
 
 			startActivity(intent);
 			break;
 		case R.id.btnFeed:
-			gotchi.setHealth(gotchi.getHealth() + 50);
+			if(gotchi.getHunger() < 4){
+				gotchi.setHunger(gotchi.getHunger() + 1);
+			}
 
 			// alter background resource depending on which stage the
 			// gotchi currently is
@@ -103,8 +122,10 @@ public class MainActivity extends Activity {
 		case R.id.btnTrain:
 			if (gotchi.getStage() == 1) {
 				gotchi.setStage(2);
+				gotchi.setWeight(2);
 			} else {
 				gotchi.setStage(1);
+				gotchi.setWeight(1);
 			}
 			restartMainAnimation();
 			break;
@@ -242,14 +263,29 @@ public class MainActivity extends Activity {
 	public void setPooAnimation(ImageView mainSequence) {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
 				MODE_PRIVATE);
-		if (gotchi.madePoo
-				|| (System.currentTimeMillis() - settings.getLong(
-						"lastTimePlayed", 0)) > (10 * 1000)) {
+		long timeSinceLastInteraction = System.currentTimeMillis()
+				- settings.getLong("lastTimePlayed", 0);
+		if (gotchi.madePoo || timeSinceLastInteraction >= (POO_TIME * 1000)) {
+			// determine how much poo the gotchi made
+			String pooSize = "small";
+			if (timeSinceLastInteraction <= (POO_TIME * 2 * 1000)) {
+				pooSize = "small";
+			}
+
+			else if ((timeSinceLastInteraction > (POO_TIME * 2 * 1000))
+					&& (timeSinceLastInteraction < (POO_TIME * 3 * 1000))) {
+				pooSize = "medium";
+			}
+
+			else if (timeSinceLastInteraction >= (POO_TIME * 3 * 1000)) {
+				pooSize = "big";
+			}
+
 			// alter background resource depending on which stage the
-			// gotchi currently is
+			// gotchi currently is and how much poo it made
 			int resId = getResources().getIdentifier(
-					"stage" + gotchi.getStage() + "_animationlist_poo",
-					"drawable", getPackageName());
+					"stage" + gotchi.getStage() + "_animationlist_poo_"
+							+ pooSize, "drawable", getPackageName());
 			mainSequence.setBackgroundResource(resId);
 			gotchi.setMadePoo(true);
 		} else {
@@ -269,11 +305,12 @@ public class MainActivity extends Activity {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
 				MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putInt("gotchiHealth", gotchi.getHealth());
+		editor.putInt("gotchiHunger", gotchi.getHunger());
 		editor.putInt("gotchiStrength", gotchi.getStrength());
 		editor.putBoolean("gotchiMadePoo", gotchi.getMadePoo());
 		editor.putBoolean("gotchiIsAngry", gotchi.getIsAngry());
 		editor.putInt("gotchiStage", gotchi.getStage());
+		editor.putInt("gotchiWeight", gotchi.getStage());
 		// time stamp to determine when game was played the last time
 		editor.putLong("lastTimePlayed", System.currentTimeMillis());
 
@@ -286,11 +323,12 @@ public class MainActivity extends Activity {
 	public void loadGotchiData() {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
 				MODE_PRIVATE);
-		gotchi.setHealth(settings.getInt("gotchiHealth", 100));
+		gotchi.setHunger(settings.getInt("gotchiHunger", 1));
 		gotchi.setStrength(settings.getInt("gotchiStrength", 1));
 		gotchi.setIsAngry(settings.getBoolean("gotchiIsAngry", false));
 		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
 		gotchi.setStage(settings.getInt("gotchiStage", 1));
+		gotchi.setWeight(settings.getInt("gotchiWeight", 1));
 	}
 
 	/**
@@ -304,11 +342,12 @@ public class MainActivity extends Activity {
 		editor.clear();
 		editor.commit();
 
-		gotchi.setHealth(settings.getInt("gotchiHealth", 100));
+		gotchi.setHunger(settings.getInt("gotchiHunger", 1));
 		gotchi.setStrength(settings.getInt("gotchiStrength", 1));
 		gotchi.setIsAngry(settings.getBoolean("gotchiIsAngry", false));
 		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
 		gotchi.setStage(settings.getInt("gotchiStage", 1));
+		gotchi.setWeight(settings.getInt("gotchiWeight", 1));
 	}
 
 	/**

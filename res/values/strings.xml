@@ -4,5 +4,11 @@
     <string name="app_name">BattleGotchi</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_info">Gotchi Info</string>
+    <string name="hunger_activity_info">hunger label</string>
+    <string name="energy_activity_info">energy label</string>
+    <string name="strength_activity_info">strength label</string>
+    <string name="victories_activity_info">victories label</string>
+    <string name="age_activity_info">age symbol</string>
+    <string name="weight_activity_info">weight symbol</string>
 
 </resources>

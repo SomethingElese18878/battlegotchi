@@ -4,5 +4,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="activity_button_bottom_margin">20dp</dimen>
+    <dimen name="info_activity_Label_top_margin">40dp</dimen>
+    <dimen name="info_activity_Label_bottom_margin">10dp</dimen>
+    <dimen name="info_activity_weight_margin">20dp</dimen>
 
 </resources>
