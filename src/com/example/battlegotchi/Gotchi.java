@@ -56,7 +56,11 @@ public class Gotchi {
 	}
 
 	public void takeDamage() {
-		this.energy = energy - 10;
+		this.energy = energy - 1;
+	}
+	
+	public int getEnergy() {
+		return this.energy;
 	}
 
 	public int getStage() {
