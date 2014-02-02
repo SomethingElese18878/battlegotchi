@@ -65,13 +65,26 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		ImageView mainSequence = (ImageView) findViewById(R.id.imageViewGotchi);
-		setPooAnimation(mainSequence);
-		AnimationDrawable gotchiAnimation = (AnimationDrawable) mainSequence
-				.getBackground();
+		changeAllButtonStates(true);
 
-		gotchiAnimation.setVisible(false, true);
-		gotchiAnimation.start();
+		// check if user came from info activity. if so -> don't change main
+		// animation!
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
+				MODE_PRIVATE);
+		if (!settings.getBoolean("cameFromInfoActivity", false)) {
+			ImageView mainSequence = (ImageView) findViewById(R.id.imageViewGotchi);
+			setPooAnimation(mainSequence);
+			AnimationDrawable gotchiAnimation = (AnimationDrawable) mainSequence
+					.getBackground();
+
+			gotchiAnimation.setVisible(false, true);
+			gotchiAnimation.start();
+		}
+
+		// reset cameFromInfoActivity flag
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean("cameFromInfoActivity", false);
+		editor.commit();
 	}
 
 	/**
@@ -104,11 +117,12 @@ public class MainActivity extends Activity {
 			intent.putExtra("gotchiAge", gotchi.getAge(getSharedPreferences(
 					PREFS_NAME, MODE_PRIVATE)));
 			intent.putExtra("gotchiWeight", gotchi.getWeight());
+			intent.putExtra("gotchiEnergy", gotchi.getEnergy());
 
 			startActivity(intent);
 			break;
 		case R.id.btnFeed:
-			if(gotchi.getHunger() < 4){
+			if (gotchi.getHunger() < 4) {
 				gotchi.setHunger(gotchi.getHunger() + 1);
 			}
 
@@ -139,14 +153,17 @@ public class MainActivity extends Activity {
 			break;
 		}
 
-		AnimationDrawable gotchiAnimation = (AnimationDrawable) gotchiView
-				.getBackground();
-		int animationDuration = getTotalAnimationDuration(gotchiAnimation);
+		if (view.getId() != R.id.btnInfo) {
 
-		gotchiAnimation.setVisible(false, true);
-		gotchiAnimation.start();
+			AnimationDrawable gotchiAnimation = (AnimationDrawable) gotchiView
+					.getBackground();
+			int animationDuration = getTotalAnimationDuration(gotchiAnimation);
 
-		waitUntilAnimationIsFinished(animationDuration);
+			gotchiAnimation.setVisible(false, true);
+			gotchiAnimation.start();
+
+			waitUntilAnimationIsFinished(animationDuration);
+		}
 
 	}
 
