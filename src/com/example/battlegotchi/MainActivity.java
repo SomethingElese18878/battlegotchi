@@ -185,10 +185,9 @@ public class MainActivity extends Activity {
 			
 			break;
 		case R.id.btnFight:
-			// TODO: alter background resource depending on which stage the
-			// gotchi
-			// currently is
-			clearGotchiData();
+			resId = getResources().getIdentifier("battle",
+					"drawable", getPackageName());
+			gotchiView.setBackgroundResource(resId);
 			break;
 		default:
 			break;
