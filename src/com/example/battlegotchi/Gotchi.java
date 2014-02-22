@@ -10,6 +10,7 @@ public class Gotchi {
 	int age;
 	int weight;
 	int energy;
+	int experience;
 	int foodCounter = 0;
 	boolean madePoo;
 	boolean isAngry;
@@ -86,5 +87,13 @@ public class Gotchi {
 
 	public int getMaxWeight() {
 		return stage * stage;
+	}
+
+	public int getExperience() {
+		return experience;
+	}
+
+	public void setExperience(int experience) {
+		this.experience = experience;
 	}
 }

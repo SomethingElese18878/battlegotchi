@@ -96,7 +96,8 @@ public class MainActivity extends Activity {
 	 */
 	public void onAction(View view) {
 		ImageView gotchiView = (ImageView) findViewById(R.id.imageViewGotchi);
-
+		changeAllButtonStates(false);
+		
 		int resId;
 		switch (view.getId()) {
 		case R.id.btnInfo:
@@ -104,7 +105,7 @@ public class MainActivity extends Activity {
 			// be in "case" for testing purposes)
 
 			// deactivate action buttons
-			changeAllButtonStates(false);
+			
 
 			// opens new activity to display gotchi info
 			Intent intent = new Intent(this, InfoActivity.class);
@@ -135,7 +136,21 @@ public class MainActivity extends Activity {
 					"drawable", getPackageName());
 			gotchiView.setBackgroundResource(resId);
 			break;
+		case R.id.btnVitamin:
+			if (gotchi.getStrength() < 4) {
+				gotchi.setStrength(gotchi.getStrength() + 1);
+			}
+
+			// alter background resource depending on which stage the
+			// gotchi currently is
+			resId = getResources().getIdentifier(
+					"stage" + gotchi.getStage() + "_animationlist_vitamin",
+					"drawable", getPackageName());
+			gotchiView.setBackgroundResource(resId);
+			break;
 		case R.id.btnTrain:
+			// starts training animation and increases gotchi experience, if projectile hits enemy
+			
 			// create random booleans for shooting up or down (own projectile and enemy projectile)
 			Random randomGen = new Random();
 			boolean enemyShootUp = randomGen.nextBoolean();
@@ -143,25 +158,27 @@ public class MainActivity extends Activity {
 
 			if(enemyShootUp && selfShootUp){
 				resId = getResources().getIdentifier(
-						"stage" + gotchi.getStage() + "_animationlist_fight_uu",
+						"stage" + gotchi.getStage() + "_animationlist_train_uu",
 						"drawable", getPackageName());
 				gotchiView.setBackgroundResource(resId);
 			}
 			if(enemyShootUp && !selfShootUp){
+				gotchi.setExperience(gotchi.getExperience()+1);
 				resId = getResources().getIdentifier(
-						"stage" + gotchi.getStage() + "_animationlist_fight_ud",
+						"stage" + gotchi.getStage() + "_animationlist_train_ud",
 						"drawable", getPackageName());
 				gotchiView.setBackgroundResource(resId);
 			}
 			if(!enemyShootUp && selfShootUp){
+				gotchi.setExperience(gotchi.getExperience()+1);
 				resId = getResources().getIdentifier(
-						"stage" + gotchi.getStage() + "_animationlist_fight_du",
+						"stage" + gotchi.getStage() + "_animationlist_train_du",
 						"drawable", getPackageName());
 				gotchiView.setBackgroundResource(resId);
 			}
 			if(!enemyShootUp && !selfShootUp){
 				resId = getResources().getIdentifier(
-						"stage" + gotchi.getStage() + "_animationlist_fight_dd",
+						"stage" + gotchi.getStage() + "_animationlist_train_dd",
 						"drawable", getPackageName());
 				gotchiView.setBackgroundResource(resId);
 			}
@@ -234,6 +251,7 @@ public class MainActivity extends Activity {
 
 	/**
 	 * calculates the total duration of an animation
+	 * 100ms are substracted from total time, to make shure, that animation doesn't restart for a short time
 	 * 
 	 * @param anim
 	 *            the animation
@@ -246,7 +264,7 @@ public class MainActivity extends Activity {
 			duration = duration + anim.getDuration(i);
 		}
 
-		return duration;
+		return duration-100;
 	}
 
 	/**
@@ -351,7 +369,8 @@ public class MainActivity extends Activity {
 		editor.putBoolean("gotchiMadePoo", gotchi.getMadePoo());
 		editor.putBoolean("gotchiIsAngry", gotchi.getIsAngry());
 		editor.putInt("gotchiStage", gotchi.getStage());
-		editor.putInt("gotchiWeight", gotchi.getStage());
+		editor.putInt("gotchiWeight", gotchi.getWeight());
+		editor.putInt("gotchiExperience", gotchi.getExperience());
 		// time stamp to determine when game was played the last time
 		editor.putLong("lastTimePlayed", System.currentTimeMillis());
 
@@ -370,6 +389,7 @@ public class MainActivity extends Activity {
 		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
 		gotchi.setStage(settings.getInt("gotchiStage", 1));
 		gotchi.setWeight(settings.getInt("gotchiWeight", 1));
+		gotchi.setExperience(settings.getInt("gotchiExperience", 1));
 	}
 
 	/**
@@ -402,10 +422,9 @@ public class MainActivity extends Activity {
 		((ImageButton) findViewById(R.id.btnFeed)).setEnabled(enabled);
 		((ImageButton) findViewById(R.id.btnTrain)).setEnabled(enabled);
 		((ImageButton) findViewById(R.id.btnFight)).setEnabled(enabled);
-		// TODO: implement other buttons
-		// ((ImageButton) findViewById(R.id.btn)).setEnabled(enabled);
-		// ((ImageButton) findViewById(R.id.btn)).setEnabled(enabled);
-		// ((ImageButton) findViewById(R.id.btn)).setEnabled(enabled);
-		// ((ImageButton) findViewById(R.id.btn)).setEnabled(enabled);
+		((ImageButton) findViewById(R.id.btnVitamin)).setEnabled(enabled);
+		((ImageButton) findViewById(R.id.btnHeal)).setEnabled(enabled);
+		((ImageButton) findViewById(R.id.btnLight)).setEnabled(enabled);
+		((ImageButton) findViewById(R.id.btnPoo)).setEnabled(enabled);
 	}
 }
