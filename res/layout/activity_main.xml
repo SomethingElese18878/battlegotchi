@@ -22,36 +22,37 @@
             android:id="@+id/btnInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onAction"
-            android:background="@drawable/a_info" 
-            android:layout_marginBottom="@dimen/activity_button_bottom_margin" />
+            android:layout_marginBottom="@dimen/activity_button_bottom_margin"
+            android:background="@drawable/a_info"
+            android:onClick="onAction" />
 
         <ImageButton
             android:id="@+id/btnFeed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onAction"
-            android:background="@drawable/btn_selector" 
-            android:layout_marginBottom="@dimen/activity_button_bottom_margin" />
+            android:layout_marginBottom="@dimen/activity_button_bottom_margin"
+            android:background="@drawable/btn_selector"
+            android:onClick="onAction" />
+
+        <ImageButton
+            android:id="@+id/btnVitamin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_button_bottom_margin"
+            android:background="@drawable/btn_selector"
+            android:onClick="onAction" />
 
         <ImageButton
             android:id="@+id/btnTrain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onAction"
-            android:background="@drawable/c_train" 
-            android:layout_marginBottom="@dimen/activity_button_bottom_margin" />
-
-        <ImageButton
-            android:id="@+id/btnFight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onAction"
-            android:background="@drawable/d_fight" />
+            android:layout_marginBottom="@dimen/activity_button_bottom_margin"
+            android:background="@drawable/c_train"
+            android:onClick="onAction" />
     </LinearLayout>
+        android:id="@+id/btnLayoutBottom"
 
     <LinearLayout
-        android:id="@+id/btnLayoutBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -59,31 +60,32 @@
         android:orientation="vertical" >
 
         <ImageButton
-            android:id="@+id/imageButton5"
+            android:id="@+id/btnFight"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:background="@drawable/e_clean_poo" 
-        	android:layout_marginBottom="@dimen/activity_button_bottom_margin" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_button_bottom_margin"
+            android:background="@drawable/d_fight"
+            android:onClick="onAction" />
 
         <ImageButton
-            android:id="@+id/imageButton6"
+            android:id="@+id/btnHeal"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:background="@drawable/f_light" 
-            android:layout_marginBottom="@dimen/activity_button_bottom_margin" />
+            android:layout_marginBottom="@dimen/activity_button_bottom_margin"
+            android:background="@drawable/g_heal" />
 
         <ImageButton
-            android:id="@+id/imageButton7"
+            android:id="@+id/btnPoo"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:background="@drawable/g_heal" 
-            android:layout_marginBottom="@dimen/activity_button_bottom_margin" />
+            android:layout_marginBottom="@dimen/activity_button_bottom_margin"
+            android:background="@drawable/e_clean_poo" />
 
         <ImageButton
-            android:id="@+id/imageButton8"
+            android:id="@+id/btnLight"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:background="@drawable/h_mysterious" />
+            android:background="@drawable/f_light" />
     </LinearLayout>
 
     <ImageView
