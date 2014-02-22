@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_button_bottom_margin"
-            android:background="@drawable/a_info"
+            android:background="@drawable/btn_info"
             android:onClick="onAction" />
 
         <ImageButton
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_button_bottom_margin"
-            android:background="@drawable/btn_selector"
+            android:background="@drawable/btn_selector_feed"
             android:onClick="onAction" />
 
         <ImageButton
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_button_bottom_margin"
-            android:background="@drawable/btn_selector"
+            android:background="@drawable/btn_selector_vitamin"
             android:onClick="onAction" />
 
         <ImageButton
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_button_bottom_margin"
-            android:background="@drawable/c_train"
+            android:background="@drawable/btn_selector_train"
             android:onClick="onAction" />
     </LinearLayout>
         android:id="@+id/btnLayoutBottom"
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_button_bottom_margin"
-            android:background="@drawable/d_fight"
+            android:background="@drawable/btn_selector_fight"
             android:onClick="onAction" />
 
         <ImageButton
@@ -72,20 +72,20 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_marginBottom="@dimen/activity_button_bottom_margin"
-            android:background="@drawable/g_heal" />
+            android:background="@drawable/btn_selector_heal" />
 
         <ImageButton
             android:id="@+id/btnPoo"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_marginBottom="@dimen/activity_button_bottom_margin"
-            android:background="@drawable/e_clean_poo" />
+            android:background="@drawable/btn_selector_poo" />
 
         <ImageButton
             android:id="@+id/btnLight"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:background="@drawable/f_light" />
+            android:background="@drawable/btn_selector_light" />
     </LinearLayout>
 
     <ImageView
