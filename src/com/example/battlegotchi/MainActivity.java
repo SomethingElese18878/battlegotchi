@@ -1,5 +1,6 @@
 package com.example.battlegotchi;
 
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -96,6 +97,7 @@ public class MainActivity extends Activity {
 	public void onAction(View view) {
 		ImageView gotchiView = (ImageView) findViewById(R.id.imageViewGotchi);
 
+		int resId;
 		switch (view.getId()) {
 		case R.id.btnInfo:
 			// TODO: deactivate action buttons BEFORE switch (for now it has to
@@ -128,20 +130,42 @@ public class MainActivity extends Activity {
 
 			// alter background resource depending on which stage the
 			// gotchi currently is
-			int resId = getResources().getIdentifier(
+			resId = getResources().getIdentifier(
 					"stage" + gotchi.getStage() + "_animationlist_eat",
 					"drawable", getPackageName());
 			gotchiView.setBackgroundResource(resId);
 			break;
 		case R.id.btnTrain:
-			if (gotchi.getStage() == 1) {
-				gotchi.setStage(2);
-				gotchi.setWeight(2);
-			} else {
-				gotchi.setStage(1);
-				gotchi.setWeight(1);
+			// create random booleans for shooting up or down (own projectile and enemy projectile)
+			Random randomGen = new Random();
+			boolean enemyShootUp = randomGen.nextBoolean();
+			boolean selfShootUp = randomGen.nextBoolean();
+
+			if(enemyShootUp && selfShootUp){
+				resId = getResources().getIdentifier(
+						"stage" + gotchi.getStage() + "_animationlist_fight_uu",
+						"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
 			}
-			restartMainAnimation();
+			if(enemyShootUp && !selfShootUp){
+				resId = getResources().getIdentifier(
+						"stage" + gotchi.getStage() + "_animationlist_fight_ud",
+						"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
+			}
+			if(!enemyShootUp && selfShootUp){
+				resId = getResources().getIdentifier(
+						"stage" + gotchi.getStage() + "_animationlist_fight_du",
+						"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
+			}
+			if(!enemyShootUp && !selfShootUp){
+				resId = getResources().getIdentifier(
+						"stage" + gotchi.getStage() + "_animationlist_fight_dd",
+						"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
+			}
+			
 			break;
 		case R.id.btnFight:
 			// TODO: alter background resource depending on which stage the
