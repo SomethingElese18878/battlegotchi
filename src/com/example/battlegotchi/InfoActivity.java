@@ -49,6 +49,42 @@ public class InfoActivity extends Activity {
 		gotchiEnergy.setBackgroundResource(getResources().getIdentifier(
 				"energy_" + extras.getInt("gotchiEnergy", 1), "drawable",
 				getPackageName()));
+		
+		// add values as images to age and weight
+		String ageStr = String.valueOf(extras.getLong("gotchiAge", 1));
+		String weightStr = String.valueOf(extras.getInt("gotchiWeight", 1));
+		
+		LinearLayout linLayoutAge = (LinearLayout) findViewById(R.id.info_linearLayout_age);
+		for(int i=0; i<ageStr.length();i++){
+			ImageView number = new ImageView(this);
+			number.setBackgroundResource(getResources().getIdentifier("number" +ageStr.charAt(i), "drawable", getPackageName()));
+			linLayoutAge.addView(number);
+		}
+		ImageView hours = new ImageView(this);
+		hours.setBackgroundResource(getResources().getIdentifier("hours", "drawable", getPackageName()));
+		linLayoutAge.addView(hours);
+		
+		LinearLayout linLayoutWeight = (LinearLayout) findViewById(R.id.info_linearLayout_weight);
+		for(int i=0; i<weightStr.length();i++){
+			ImageView number = new ImageView(this);
+			number.setBackgroundResource(getResources().getIdentifier("number" +weightStr.charAt(i), "drawable", getPackageName()));
+			linLayoutWeight.addView(number);
+		}
+		ImageView gramm = new ImageView(this);
+		gramm.setBackgroundResource(getResources().getIdentifier("gramm", "drawable", getPackageName()));
+		linLayoutWeight.addView(gramm);
+		
+		
+		// add value to victories
+		// TODO: add real value when fighting is implemented, for now only "0" is shown
+		LinearLayout linLayoutVictories = (LinearLayout) findViewById(R.id.info_linearLayout_victories);
+		ImageView zero = new ImageView(this);
+		zero.setBackgroundResource(getResources().getIdentifier("number0", "drawable", getPackageName()));
+		linLayoutVictories.addView(zero);
+		
+		ImageView percent = new ImageView(this);
+		percent.setBackgroundResource(getResources().getIdentifier("percent", "drawable", getPackageName()));
+		linLayoutVictories.addView(percent);
 	}
 
 	/**

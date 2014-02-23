@@ -7,5 +7,6 @@
     <dimen name="info_activity_Label_top_margin">40dp</dimen>
     <dimen name="info_activity_Label_bottom_margin">10dp</dimen>
     <dimen name="info_activity_weight_margin">20dp</dimen>
+    <dimen name="info_activity_top_vertical_values_margin">50dp</dimen>
 
 </resources>
