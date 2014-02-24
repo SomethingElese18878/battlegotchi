@@ -70,22 +70,25 @@
         <ImageButton
             android:id="@+id/btnHeal"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_button_bottom_margin"
-            android:background="@drawable/btn_selector_heal" />
+            android:background="@drawable/btn_selector_heal" 
+            android:onClick="onAction"/>
 
         <ImageButton
             android:id="@+id/btnPoo"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_button_bottom_margin"
-            android:background="@drawable/btn_selector_poo" />
+            android:background="@drawable/btn_selector_poo" 
+            android:onClick="onAction"/>
 
         <ImageButton
             android:id="@+id/btnLight"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:background="@drawable/btn_selector_light" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_selector_light" 
+            android:onClick="onAction"/>
     </LinearLayout>
 
     <ImageView

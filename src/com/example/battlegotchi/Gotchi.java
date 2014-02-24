@@ -72,6 +72,7 @@ public class Gotchi {
 		this.stage = stage;
 	}
 
+	// return gotchi age in hours
 	public long getAge(SharedPreferences settings) {
 		return (System.currentTimeMillis() - settings.getLong(
 				"firstRunTimestamp", 0))/1000/60/60;

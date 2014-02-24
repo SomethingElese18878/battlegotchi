@@ -114,7 +114,6 @@ public class MainActivity extends Activity {
 			// be in "case" for testing purposes)
 
 			// deactivate action buttons
-			
 
 			// opens new activity to display gotchi info
 			Intent intent = new Intent(this, InfoActivity.class);
@@ -134,16 +133,41 @@ public class MainActivity extends Activity {
 			startActivity(intent);
 			break;
 		case R.id.btnFeed:
+			changeAllButtonStates(false);
 			if (gotchi.getHunger() < 4) {
 				gotchi.setHunger(gotchi.getHunger() + 1);
+				gotchi.setWeight(gotchi.getWeight() +1);
+				
+				// alter background resource depending on which stage the
+				// gotchi currently is
+				resId = getResources().getIdentifier(
+						"stage" + gotchi.getStage() + "_animationlist_eat",
+						"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
+			} else {
+				resId = getResources().getIdentifier(
+						"stage" + gotchi.getStage() + "_animationlist_no",
+						"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
 			}
+			break;
+		case R.id.btnVitamin:
+			changeAllButtonStates(false);
+			if (gotchi.getStrength() < 4) {
+				gotchi.setStrength(gotchi.getStrength() + 1);
 
 			// alter background resource depending on which stage the
 			// gotchi currently is
 			resId = getResources().getIdentifier(
-					"stage" + gotchi.getStage() + "_animationlist_eat",
+					"stage" + gotchi.getStage() + "_animationlist_vitamin",
 					"drawable", getPackageName());
 			gotchiView.setBackgroundResource(resId);
+			} else {
+				resId = getResources().getIdentifier(
+						"stage" + gotchi.getStage() + "_animationlist_no",
+						"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
+			}
 			break;
 		case R.id.btnVitamin:
 			if (gotchi.getStrength() < 4) {
@@ -158,55 +182,85 @@ public class MainActivity extends Activity {
 			gotchiView.setBackgroundResource(resId);
 			break;
 		case R.id.btnTrain:
-			// starts training animation and increases gotchi experience, if projectile hits enemy
-			
-			// create random booleans for shooting up or down (own projectile and enemy projectile)
+			changeAllButtonStates(false);
+			// starts training animation and increases gotchi experience, if
+			// projectile hits enemy
+
+			// create random booleans for shooting up or down (own projectile
+			// and enemy projectile)
 			Random randomGen = new Random();
 			boolean enemyShootUp = randomGen.nextBoolean();
 			boolean selfShootUp = randomGen.nextBoolean();
 
-			if(enemyShootUp && selfShootUp){
-				resId = getResources().getIdentifier(
-						"stage" + gotchi.getStage() + "_animationlist_train_uu",
-						"drawable", getPackageName());
+			if (enemyShootUp && selfShootUp) {
+				resId = getResources()
+						.getIdentifier(
+								"stage" + gotchi.getStage()
+										+ "_animationlist_train_uu",
+								"drawable", getPackageName());
 				gotchiView.setBackgroundResource(resId);
 			}
-			if(enemyShootUp && !selfShootUp){
-				gotchi.setExperience(gotchi.getExperience()+1);
-				resId = getResources().getIdentifier(
-						"stage" + gotchi.getStage() + "_animationlist_train_ud",
-						"drawable", getPackageName());
+			if (enemyShootUp && !selfShootUp) {
+				gotchi.setExperience(gotchi.getExperience() + 1);
+				resId = getResources()
+						.getIdentifier(
+								"stage" + gotchi.getStage()
+										+ "_animationlist_train_ud",
+								"drawable", getPackageName());
 				gotchiView.setBackgroundResource(resId);
 			}
-			if(!enemyShootUp && selfShootUp){
-				gotchi.setExperience(gotchi.getExperience()+1);
-				resId = getResources().getIdentifier(
-						"stage" + gotchi.getStage() + "_animationlist_train_du",
-						"drawable", getPackageName());
+			if (!enemyShootUp && selfShootUp) {
+				gotchi.setExperience(gotchi.getExperience() + 1);
+				resId = getResources()
+						.getIdentifier(
+								"stage" + gotchi.getStage()
+										+ "_animationlist_train_du",
+								"drawable", getPackageName());
 				gotchiView.setBackgroundResource(resId);
 			}
-			if(!enemyShootUp && !selfShootUp){
-				resId = getResources().getIdentifier(
-						"stage" + gotchi.getStage() + "_animationlist_train_dd",
-						"drawable", getPackageName());
+			if (!enemyShootUp && !selfShootUp) {
+				resId = getResources()
+						.getIdentifier(
+								"stage" + gotchi.getStage()
+										+ "_animationlist_train_dd",
+								"drawable", getPackageName());
 				gotchiView.setBackgroundResource(resId);
 			}
-			
+
 			break;
 		case R.id.btnFight:
-			Log.d(TAG, "btnFight pressed");
-			resId = getResources().getIdentifier("battle",
+			changeAllButtonStates(false);
+			resId = getResources().getIdentifier("battle", "drawable",
+					getPackageName());
+			gotchiView.setBackgroundResource(resId);
+			break;
+		case R.id.btnHeal:
+			changeAllButtonStates(false);
+			resId = getResources().getIdentifier(
+					"stage" + gotchi.getStage() + "_animationlist_no",
 					"drawable", getPackageName());
 			gotchiView.setBackgroundResource(resId);
-
-			fightConnection = new FightConnection(this);
-			fightConnection.enableBluetooth();
+			break;
+		case R.id.btnPoo:
+			if (gotchi.madePoo) {
+				gotchi.setMadePoo(false);
+				restartMainAnimation();
+				// onImageViewClick(gotchiView);
+			}
+			break;
+		case R.id.btnLight:
+			if(gotchi.getStage() == 1){
+				gotchi.setStage(2);
+			} else {
+				gotchi.setStage(1);
+			}
+			restartMainAnimation();
 			break;
 		default:
 			break;
 		}
 
-		if (view.getId() != R.id.btnInfo) {
+		if (view.getId() != R.id.btnInfo && view.getId() != R.id.btnPoo && view.getId() != R.id.btnLight) {
 
 			AnimationDrawable gotchiAnimation = (AnimationDrawable) gotchiView
 					.getBackground();
@@ -283,8 +337,9 @@ public class MainActivity extends Activity {
 	}
 
 	/**
-	 * calculates the total duration of an animation
-	 * 100ms are substracted from total time, to make shure, that animation doesn't restart for a short time
+	 * calculates the total duration of an animation 100ms are substracted from
+	 * total time, to make shure, that animation doesn't restart for a short
+	 * time
 	 * 
 	 * @param anim
 	 *            the animation
@@ -297,7 +352,7 @@ public class MainActivity extends Activity {
 			duration = duration + anim.getDuration(i);
 		}
 
-		return duration-100;
+		return duration - 100;
 	}
 
 	/**
@@ -362,15 +417,18 @@ public class MainActivity extends Activity {
 			String pooSize = "small";
 			if (timeSinceLastInteraction <= (POO_TIME * 2 * 1000)) {
 				pooSize = "small";
+				updateHunger(1);
 			}
 
 			else if ((timeSinceLastInteraction > (POO_TIME * 2 * 1000))
 					&& (timeSinceLastInteraction < (POO_TIME * 3 * 1000))) {
 				pooSize = "medium";
+				updateHunger(2);
 			}
 
 			else if (timeSinceLastInteraction >= (POO_TIME * 3 * 1000)) {
 				pooSize = "big";
+				updateHunger(3);
 			}
 
 			// alter background resource depending on which stage the
@@ -387,6 +445,20 @@ public class MainActivity extends Activity {
 					"stage" + gotchi.getStage() + "_animationlist_main",
 					"drawable", getPackageName());
 			mainSequence.setBackgroundResource(resId);
+		}
+	}
+	
+	/**
+	 * sets new hunger value
+	 * 
+	 * @param hearts to substract from current hunger value
+	 */
+	private void updateHunger(int hearts){
+		gotchi.setHunger(gotchi.getHunger() - hearts);
+		
+		//if hunger value is below 0, set hunger to 0
+		if(gotchi.getHunger() < 0){
+			gotchi.setHunger(0);
 		}
 	}
 
