@@ -24,8 +24,8 @@ public class InfoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		// hide actionbar
-		ActionBar actionBar = getActionBar();
-		actionBar.hide();
+//		ActionBar actionBar = getActionBar();
+//		actionBar.hide();
 		
 		setContentView(R.layout.activity_info);
 		// Show the Up button in the action bar.

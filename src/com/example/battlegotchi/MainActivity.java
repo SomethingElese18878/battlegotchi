@@ -4,34 +4,43 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.ActionBar;
 import android.app.Activity;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 
+	private static final String TAG = MainActivity.class.getSimpleName();
 	// name of the shared reference
 	public final static String PREFS_NAME = "gotchidata";
-
+	
 	// time in seconds for gotchi to poo, when user doesn't interact
 	final int POO_TIME = 10;
 	private Gotchi gotchi;
+	FightConnection fightConnection;
+	ArrayAdapter<String> mArrayAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		System.out.println("mannn");
 
 		// hide actionbar
-		ActionBar actionBar = getActionBar();
-		actionBar.hide();
+//		ActionBar actionBar = getActionBar();
+//		actionBar.hide();
 
 		gotchi = new Gotchi();
 
@@ -185,9 +194,13 @@ public class MainActivity extends Activity {
 			
 			break;
 		case R.id.btnFight:
+			Log.d(TAG, "btnFight pressed");
 			resId = getResources().getIdentifier("battle",
 					"drawable", getPackageName());
 			gotchiView.setBackgroundResource(resId);
+
+			fightConnection = new FightConnection(this);
+			fightConnection.enableBluetooth();
 			break;
 		default:
 			break;
@@ -206,6 +219,27 @@ public class MainActivity extends Activity {
 		}
 
 	}
+
+
+	public void onActivityResult(int requestCode, int resultCode, Intent intent){
+		Log.d(TAG, "onActivityResult");
+	    switch (requestCode) {
+	    case FightConnection.REQUEST_ENABLE_BT:
+	        if (resultCode == Activity.RESULT_OK) {
+	        	Log.d(TAG, "RESULT OK");
+	        	fightConnection.findDevice();
+	        } else if(resultCode == Activity.RESULT_CANCELED) {
+
+	        } else {
+	            // User did not enable Bluetooth or an error occurred
+	        }
+	    break;
+	    
+	    default:
+	        break;
+	    }
+	}
+	
 
 	/**
 	 * called when the ImageView itself gets clicked
