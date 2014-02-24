@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:drawable="@drawable/stage1_train0"
+        android:duration="1000"/>
+    <item
+        android:drawable="@drawable/stage1_train"
+        android:duration="1000"/>
+    <item
+        android:drawable="@drawable/stage1_train_uu"
+        android:duration="1000"/>
+    <item
+        android:drawable="@drawable/stage1_train_uu1"
+        android:duration="1000"/>
+    <item
+        android:drawable="@drawable/stage1_train_loose"
+        android:duration="1000"/>
+    <item
+        android:drawable="@drawable/stage1_train_loose1"
+        android:duration="1500"/>
+    <item
+        android:drawable="@drawable/stage1_train_loose"
+        android:duration="1000"/>
+    <item
+        android:drawable="@drawable/stage1_train_loose1"
+        android:duration="1500"/>
+
+</animation-list>

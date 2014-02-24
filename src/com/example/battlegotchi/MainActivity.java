@@ -1,5 +1,6 @@
 package com.example.battlegotchi;
 
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -17,7 +18,10 @@ import android.widget.ImageView;
 public class MainActivity extends Activity {
 
 	// name of the shared reference
-	final String PREFS_NAME = "gotchidata";
+	public final static String PREFS_NAME = "gotchidata";
+
+	// time in seconds for gotchi to poo, when user doesn't interact
+	final int POO_TIME = 10;
 	private Gotchi gotchi;
 
 	@Override
@@ -30,6 +34,17 @@ public class MainActivity extends Activity {
 		actionBar.hide();
 
 		gotchi = new Gotchi();
+
+		// if the app is run for the first time, set a timestamp (needed to
+		// calculate gotchi age)
+		long firstRunTimestamp = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+				.getLong("firstRunTimestamp", 0);
+		if (firstRunTimestamp == 0) {
+			getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit()
+					.putLong("firstRunTimestamp", System.currentTimeMillis())
+					.commit();
+		}
+
 		loadGotchiData();
 
 		ImageView mainSequence = (ImageView) findViewById(R.id.imageViewGotchi);
@@ -51,13 +66,26 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		ImageView mainSequence = (ImageView) findViewById(R.id.imageViewGotchi);
-		setPooAnimation(mainSequence);
-		AnimationDrawable gotchiAnimation = (AnimationDrawable) mainSequence
-				.getBackground();
+		changeAllButtonStates(true);
 
-		gotchiAnimation.setVisible(false, true);
-		gotchiAnimation.start();
+		// check if user came from info activity. if so -> don't change main
+		// animation!
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
+				MODE_PRIVATE);
+		if (!settings.getBoolean("cameFromInfoActivity", false)) {
+			ImageView mainSequence = (ImageView) findViewById(R.id.imageViewGotchi);
+			setPooAnimation(mainSequence);
+			AnimationDrawable gotchiAnimation = (AnimationDrawable) mainSequence
+					.getBackground();
+
+			gotchiAnimation.setVisible(false, true);
+			gotchiAnimation.start();
+		}
+
+		// reset cameFromInfoActivity flag
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean("cameFromInfoActivity", false);
+		editor.commit();
 	}
 
 	/**
@@ -69,63 +97,158 @@ public class MainActivity extends Activity {
 	public void onAction(View view) {
 		ImageView gotchiView = (ImageView) findViewById(R.id.imageViewGotchi);
 
+		int resId;
 		switch (view.getId()) {
 		case R.id.btnInfo:
 			// TODO: deactivate action buttons BEFORE switch (for now it has to
 			// be in "case" for testing purposes)
-			
+
 			// deactivate action buttons
-			changeAllButtonStates(false);
 
 			// opens new activity to display gotchi info
 			Intent intent = new Intent(this, InfoActivity.class);
 
 			// put gotchi data as extras (maybe solution with "parcelables" is
 			// better?)
-			intent.putExtra("gotchiHealth", gotchi.getHealth());
+			intent.putExtra("gotchiHunger", gotchi.getHunger());
 			intent.putExtra("gotchiStrength", gotchi.getStrength());
 			intent.putExtra("gotchiIsAngry", gotchi.getIsAngry());
 			intent.putExtra("gotchiMadePoo", gotchi.getMadePoo());
 			intent.putExtra("gotchiStage", gotchi.getStage());
+			intent.putExtra("gotchiAge", gotchi.getAge(getSharedPreferences(
+					PREFS_NAME, MODE_PRIVATE)));
+			intent.putExtra("gotchiWeight", gotchi.getWeight());
+			intent.putExtra("gotchiEnergy", gotchi.getEnergy());
 
 			startActivity(intent);
 			break;
 		case R.id.btnFeed:
-			gotchi.setHealth(gotchi.getHealth() + 50);
+			changeAllButtonStates(false);
+			if (gotchi.getHunger() < 4) {
+				gotchi.setHunger(gotchi.getHunger() + 1);
+				gotchi.setWeight(gotchi.getWeight() +1);
+				
+				// alter background resource depending on which stage the
+				// gotchi currently is
+				resId = getResources().getIdentifier(
+						"stage" + gotchi.getStage() + "_animationlist_eat",
+						"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
+			} else {
+				resId = getResources().getIdentifier(
+						"stage" + gotchi.getStage() + "_animationlist_no",
+						"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
+			}
+			break;
+		case R.id.btnVitamin:
+			changeAllButtonStates(false);
+			if (gotchi.getStrength() < 4) {
+				gotchi.setStrength(gotchi.getStrength() + 1);
 
 			// alter background resource depending on which stage the
 			// gotchi currently is
-			int resId = getResources().getIdentifier(
-					"stage" + gotchi.getStage() + "_animationlist_eat",
+			resId = getResources().getIdentifier(
+					"stage" + gotchi.getStage() + "_animationlist_vitamin",
+					"drawable", getPackageName());
+			gotchiView.setBackgroundResource(resId);
+			} else {
+				resId = getResources().getIdentifier(
+						"stage" + gotchi.getStage() + "_animationlist_no",
+						"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
+			}
+			break;
+		case R.id.btnTrain:
+			changeAllButtonStates(false);
+			// starts training animation and increases gotchi experience, if
+			// projectile hits enemy
+
+			// create random booleans for shooting up or down (own projectile
+			// and enemy projectile)
+			Random randomGen = new Random();
+			boolean enemyShootUp = randomGen.nextBoolean();
+			boolean selfShootUp = randomGen.nextBoolean();
+
+			if (enemyShootUp && selfShootUp) {
+				resId = getResources()
+						.getIdentifier(
+								"stage" + gotchi.getStage()
+										+ "_animationlist_train_uu",
+								"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
+			}
+			if (enemyShootUp && !selfShootUp) {
+				gotchi.setExperience(gotchi.getExperience() + 1);
+				resId = getResources()
+						.getIdentifier(
+								"stage" + gotchi.getStage()
+										+ "_animationlist_train_ud",
+								"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
+			}
+			if (!enemyShootUp && selfShootUp) {
+				gotchi.setExperience(gotchi.getExperience() + 1);
+				resId = getResources()
+						.getIdentifier(
+								"stage" + gotchi.getStage()
+										+ "_animationlist_train_du",
+								"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
+			}
+			if (!enemyShootUp && !selfShootUp) {
+				resId = getResources()
+						.getIdentifier(
+								"stage" + gotchi.getStage()
+										+ "_animationlist_train_dd",
+								"drawable", getPackageName());
+				gotchiView.setBackgroundResource(resId);
+			}
+
+			break;
+		case R.id.btnFight:
+			changeAllButtonStates(false);
+			resId = getResources().getIdentifier("battle", "drawable",
+					getPackageName());
+			gotchiView.setBackgroundResource(resId);
+			break;
+		case R.id.btnHeal:
+			changeAllButtonStates(false);
+			resId = getResources().getIdentifier(
+					"stage" + gotchi.getStage() + "_animationlist_no",
 					"drawable", getPackageName());
 			gotchiView.setBackgroundResource(resId);
 			break;
-		case R.id.btnTrain:
-			if (gotchi.getStage() == 1) {
+		case R.id.btnPoo:
+			if (gotchi.madePoo) {
+				gotchi.setMadePoo(false);
+				restartMainAnimation();
+				// onImageViewClick(gotchiView);
+			}
+			break;
+		case R.id.btnLight:
+			if(gotchi.getStage() == 1){
 				gotchi.setStage(2);
 			} else {
 				gotchi.setStage(1);
 			}
 			restartMainAnimation();
 			break;
-		case R.id.btnFight:
-			// TODO: alter background resource depending on which stage the
-			// gotchi
-			// currently is
-			clearGotchiData();
-			break;
 		default:
 			break;
 		}
 
-		AnimationDrawable gotchiAnimation = (AnimationDrawable) gotchiView
-				.getBackground();
-		int animationDuration = getTotalAnimationDuration(gotchiAnimation);
+		if (view.getId() != R.id.btnInfo && view.getId() != R.id.btnPoo && view.getId() != R.id.btnLight) {
 
-		gotchiAnimation.setVisible(false, true);
-		gotchiAnimation.start();
+			AnimationDrawable gotchiAnimation = (AnimationDrawable) gotchiView
+					.getBackground();
+			int animationDuration = getTotalAnimationDuration(gotchiAnimation);
 
-		waitUntilAnimationIsFinished(animationDuration);
+			gotchiAnimation.setVisible(false, true);
+			gotchiAnimation.start();
+
+			waitUntilAnimationIsFinished(animationDuration);
+		}
 
 	}
 
@@ -171,7 +294,9 @@ public class MainActivity extends Activity {
 	}
 
 	/**
-	 * calculates the total duration of an animation
+	 * calculates the total duration of an animation 100ms are substracted from
+	 * total time, to make shure, that animation doesn't restart for a short
+	 * time
 	 * 
 	 * @param anim
 	 *            the animation
@@ -184,7 +309,7 @@ public class MainActivity extends Activity {
 			duration = duration + anim.getDuration(i);
 		}
 
-		return duration;
+		return duration - 100;
 	}
 
 	/**
@@ -242,14 +367,32 @@ public class MainActivity extends Activity {
 	public void setPooAnimation(ImageView mainSequence) {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
 				MODE_PRIVATE);
-		if (gotchi.madePoo
-				|| (System.currentTimeMillis() - settings.getLong(
-						"lastTimePlayed", 0)) > (10 * 1000)) {
+		long timeSinceLastInteraction = System.currentTimeMillis()
+				- settings.getLong("lastTimePlayed", 0);
+		if (gotchi.madePoo || timeSinceLastInteraction >= (POO_TIME * 1000)) {
+			// determine how much poo the gotchi made
+			String pooSize = "small";
+			if (timeSinceLastInteraction <= (POO_TIME * 2 * 1000)) {
+				pooSize = "small";
+				updateHunger(1);
+			}
+
+			else if ((timeSinceLastInteraction > (POO_TIME * 2 * 1000))
+					&& (timeSinceLastInteraction < (POO_TIME * 3 * 1000))) {
+				pooSize = "medium";
+				updateHunger(2);
+			}
+
+			else if (timeSinceLastInteraction >= (POO_TIME * 3 * 1000)) {
+				pooSize = "big";
+				updateHunger(3);
+			}
+
 			// alter background resource depending on which stage the
-			// gotchi currently is
+			// gotchi currently is and how much poo it made
 			int resId = getResources().getIdentifier(
-					"stage" + gotchi.getStage() + "_animationlist_poo",
-					"drawable", getPackageName());
+					"stage" + gotchi.getStage() + "_animationlist_poo_"
+							+ pooSize, "drawable", getPackageName());
 			mainSequence.setBackgroundResource(resId);
 			gotchi.setMadePoo(true);
 		} else {
@@ -261,6 +404,20 @@ public class MainActivity extends Activity {
 			mainSequence.setBackgroundResource(resId);
 		}
 	}
+	
+	/**
+	 * sets new hunger value
+	 * 
+	 * @param hearts to substract from current hunger value
+	 */
+	private void updateHunger(int hearts){
+		gotchi.setHunger(gotchi.getHunger() - hearts);
+		
+		//if hunger value is below 0, set hunger to 0
+		if(gotchi.getHunger() < 0){
+			gotchi.setHunger(0);
+		}
+	}
 
 	/**
 	 * saves all gotchi data as shared preferences (persistence)
@@ -269,11 +426,13 @@ public class MainActivity extends Activity {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
 				MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putInt("gotchiHealth", gotchi.getHealth());
+		editor.putInt("gotchiHunger", gotchi.getHunger());
 		editor.putInt("gotchiStrength", gotchi.getStrength());
 		editor.putBoolean("gotchiMadePoo", gotchi.getMadePoo());
 		editor.putBoolean("gotchiIsAngry", gotchi.getIsAngry());
 		editor.putInt("gotchiStage", gotchi.getStage());
+		editor.putInt("gotchiWeight", gotchi.getWeight());
+		editor.putInt("gotchiExperience", gotchi.getExperience());
 		// time stamp to determine when game was played the last time
 		editor.putLong("lastTimePlayed", System.currentTimeMillis());
 
@@ -286,11 +445,13 @@ public class MainActivity extends Activity {
 	public void loadGotchiData() {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
 				MODE_PRIVATE);
-		gotchi.setHealth(settings.getInt("gotchiHealth", 100));
+		gotchi.setHunger(settings.getInt("gotchiHunger", 1));
 		gotchi.setStrength(settings.getInt("gotchiStrength", 1));
 		gotchi.setIsAngry(settings.getBoolean("gotchiIsAngry", false));
 		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
 		gotchi.setStage(settings.getInt("gotchiStage", 1));
+		gotchi.setWeight(settings.getInt("gotchiWeight", 1));
+		gotchi.setExperience(settings.getInt("gotchiExperience", 1));
 	}
 
 	/**
@@ -304,11 +465,12 @@ public class MainActivity extends Activity {
 		editor.clear();
 		editor.commit();
 
-		gotchi.setHealth(settings.getInt("gotchiHealth", 100));
+		gotchi.setHunger(settings.getInt("gotchiHunger", 1));
 		gotchi.setStrength(settings.getInt("gotchiStrength", 1));
 		gotchi.setIsAngry(settings.getBoolean("gotchiIsAngry", false));
 		gotchi.setMadePoo(settings.getBoolean("gotchiMadePoo", false));
 		gotchi.setStage(settings.getInt("gotchiStage", 1));
+		gotchi.setWeight(settings.getInt("gotchiWeight", 1));
 	}
 
 	/**
@@ -322,10 +484,9 @@ public class MainActivity extends Activity {
 		((ImageButton) findViewById(R.id.btnFeed)).setEnabled(enabled);
 		((ImageButton) findViewById(R.id.btnTrain)).setEnabled(enabled);
 		((ImageButton) findViewById(R.id.btnFight)).setEnabled(enabled);
-		// TODO: implement other buttons
-		// ((ImageButton) findViewById(R.id.btn)).setEnabled(enabled);
-		// ((ImageButton) findViewById(R.id.btn)).setEnabled(enabled);
-		// ((ImageButton) findViewById(R.id.btn)).setEnabled(enabled);
-		// ((ImageButton) findViewById(R.id.btn)).setEnabled(enabled);
+		((ImageButton) findViewById(R.id.btnVitamin)).setEnabled(enabled);
+		((ImageButton) findViewById(R.id.btnHeal)).setEnabled(enabled);
+		((ImageButton) findViewById(R.id.btnLight)).setEnabled(enabled);
+		((ImageButton) findViewById(R.id.btnPoo)).setEnabled(enabled);
 	}
 }
